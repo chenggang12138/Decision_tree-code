@@ -1,0 +1,64 @@
+from Compiler.sorting import radix_sort
+from Compiler.mpc_math import sqrt
+n=1000
+m=150
+g=Array(n,sfix)
+g.assign_all(2)
+x=Array(n,sfix)
+g.assign_all(1)
+#g.assign([76,57,78,66,53,15,80,46,98,33,43,75,76,20,37,18,13,28,59,6,8,12,99,46,50,1,8,73,77,83,23,82])
+#x.assign([2446,2641,22211,33234,92942,93031,100995,109645,114237,116290,116699,143966,167577,231213,240569,241327,243867,247941,253726,254929,328740,353524,399109,401685,451106,466768,488938,669911,674268,679434,707321,716246])
+#radix_sort(g,x)
+def compute(vaj,va,k,vij,vi):
+    st1=sfix(0)
+    st2=sfix(0)
+    st3=sfix(0)
+    res=sfix(0)
+    for i in range(0,k):
+        st1=st1+(vaj[i]-va[i])*(vij[i]-vi[i])
+        st2=st2+(vaj[i]-va[i])*(vaj[i]-va[i])
+        st3=st3+(vij[i]-vi[i])*(vij[i]-vi[i])
+    res=st1/sqrt(st2*st3)   
+    #print_ln("%s",res.reveal()) 
+    return res
+def compare(vaj,va,k,vij,vi,si):
+    t1=Array(si,sfix)
+    flag=sfix(0)
+    for i in range(0,si):
+        t1[i]=compute(vaj,va,k,vij,vi)
+        c=t1[i].__gt__(flag)
+        flag=t1[i]*c+(1-c)*flag
+ 
+compare(g,x,n,g,x,m)    
+
+def compute2(vaj,va,k,vij,vi):
+    st1=sfix(0)
+    st2=sfix(0)
+    st3=sfix(0)
+    res=sfix(0)
+    for i in range(0,k):
+        st1=st1+(vaj[i]-va[i])*(vij[i]-vi[i])
+        st2=st2+(vaj[i]-va[i])*(vaj[i]-va[i])
+        st3=st3+(vij[i]-vi[i])*(vij[i]-vi[i])
+    res=st2*st3
+    #print_ln("%s",res.reveal()) 
+    return st1,res   
+
+
+def compare2(vaj,va,k,vij,vi,si):
+    t1=Array(si,sfix)
+    t2=Array(si,sfix)
+    flag1=sfix(0)
+    flag2=sfix(0)
+    for i in range(0,si):
+        t1[i],t2[i]=compute2(vaj,va,k,vij,vi)
+        t1[i]=t1[i].__gt__(0)*t1[i]
+        c1=flag1*t2[i]  
+        c2=flag2*t1[i]*t1[i]
+        c=c2.__ge__(c1)
+        flag1=c*t1[i]*t1[i]
+        flag2=c*t2[i]
+        
+       
+        
+        
